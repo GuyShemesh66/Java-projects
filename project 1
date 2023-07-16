@@ -1,1 +1,79 @@
 
+public class ArrayUtils {
+
+    private static final String R = null;
+
+
+    public static int[] shiftArrayCyclic(int[] array, int move, char direction) {
+        // TODO
+         int [] otherArray=new int[array.length];
+         int absMove=Math.abs(move);
+         int newIndex=0;
+        if((direction=='R' && move>0)||(direction=='L'&& move<0))
+        {
+            for (int i=0;i<array.length;i++)
+            {
+                otherArray[(i+absMove)%array.length]=array[i];
+            }
+            for (int i=0;i<array.length;i++)
+            {
+                array[i]=otherArray[i];
+            }
+        }
+        if((direction=='L'&&move>0)||(direction=='R' && move<0))
+                {
+                    for (int i=0;i<array.length;i++)
+                    { newIndex=i-absMove;
+                        while(newIndex<0){
+                                newIndex=newIndex+array.length;
+                        }
+                        newIndex=newIndex%array.length;
+                        otherArray[newIndex]=array[i];
+                    }
+                    for (int i=0;i<array.length;i++)
+                    {
+                        array[i]=otherArray[i];
+                    }
+                }
+        return array; 
+
+    }
+
+
+    public static int findShortestPath(int[][] m, int i, int j) {
+        // TODO    
+        if (i==j) {  //if the trail start and end in the same node
+            return 0;
+        }
+    int answer= findShortestPath(m,i,j,0);
+    if (answer==m.length+1) {//if there is no possible trail from i to j
+        return -1;
+    }
+    else
+        return answer;
+    }
+
+    private static int findShortestPath(int[][] m, int checkedtNode, int j, int minPath)
+    {
+        if (minPath>m.length) { //the current trail across the same node twice
+            return m.length+1;
+        }
+        if(checkedtNode==j) {
+            return minPath;// we arrived to the destination
+        }
+        int path=0;
+        int min=m.length+1;
+        for(int x=0;x<m.length;x++) {
+            if ((x!=checkedtNode)&&(m[checkedtNode][x]==1))// we check the possible way from the current node
+            {
+            min=Math.min(min,findShortestPath(m,x,j,minPath+1));
+                path=path+1;
+            }
+        }
+        if (path==0){// the current node is without a way to continue
+            return m.length+1;
+        }
+        return min;
+     
+    }
+}
